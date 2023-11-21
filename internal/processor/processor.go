@@ -13,13 +13,12 @@ const (
 )
 
 type SourceProcessor interface {
-	Process(reader io.Reader) error
+	Init(source io.Reader, robot robot.Robot, logger Logger)
+	Process() error
 }
 
 type Processor struct {
 	SrcProcessor SourceProcessor
-	Source       io.Reader
-	Robot        robot.Robot
 }
 
 func NewProcessor(source io.Reader, sourceType string) (*Processor, error) {
@@ -30,13 +29,13 @@ func NewProcessor(source io.Reader, sourceType string) (*Processor, error) {
 		return nil, fmt.Errorf("unsupported source type: %s", sourceType)
 	}
 
+	sourceProcessor.Init(source, &robot.ToyRobot{}, &StdLogger{})
+
 	return &Processor{
 		SrcProcessor: sourceProcessor,
-		Source:       source,
-		Robot:        &robot.ToyRobot{},
 	}, nil
 }
 
 func (p *Processor) Execute() {
-	p.SrcProcessor.Process(p.Source)
+	p.SrcProcessor.Process()
 }

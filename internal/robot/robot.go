@@ -1,22 +1,9 @@
 package robot
 
-type Robot interface {
-	Place(x, y, direction int) error
-	// Move() error
-	// Left() error
-	// Right() error
-	// Report() error
-}
+import "fmt"
 
 type ToyRobot struct {
 	state RobotState
-}
-
-type RobotState struct {
-	x         int
-	y         int
-	direction int
-	isPlaced  bool
 }
 
 func (t *ToyRobot) Place(x, y, direction int) error {
@@ -28,4 +15,24 @@ func (t *ToyRobot) Place(x, y, direction int) error {
 	}
 
 	return nil
+}
+
+func (t *ToyRobot) Report() {
+	fmt.Printf("Output: %v,%v,%v\n", t.state.x, t.state.y, t.state.direction)
+}
+
+func (t *ToyRobot) IsPlaced() bool {
+	return t.state.isPlaced
+}
+
+func (t *ToyRobot) GetState() RobotState {
+	return t.state
+}
+
+func (t *ToyRobot) Init() {
+	t.state = RobotState{
+		x:         -1,
+		y:         -1,
+		direction: -1,
+	}
 }
