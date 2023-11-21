@@ -20,6 +20,15 @@ func (m *MockLogger) Println(args ...interface{}) {
 	m.logs = append(m.logs, log)
 }
 
+func (m *MockLogger) Print(args ...interface{}) {
+	var log string
+	for _, arg := range args {
+		log += fmt.Sprint(arg)
+	}
+
+	m.logs = append(m.logs, log)
+}
+
 func TestProcessData(t *testing.T) {
 	stdin := strings.NewReader("PLACE")
 

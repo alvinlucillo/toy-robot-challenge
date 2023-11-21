@@ -4,8 +4,8 @@ const (
 	_ int = iota
 	DirectionNorth
 	DirectionEast
-	DirectionWest
 	DirectionSouth
+	DirectionWest
 )
 
 const (
@@ -15,6 +15,11 @@ const (
 	CommandRight  = "RIGHT"
 	CommandReport = "REPORT"
 	CommandHelp   = "HELP"
+
+	DirectionNorthTitle = "NORTH"
+	DirectionEastTitle  = "EAST"
+	DirectionSouthTitle = "SOUTH"
+	DirectionWestTitle  = "WEST"
 )
 
 type RobotState struct {
@@ -26,11 +31,11 @@ type RobotState struct {
 
 type Robot interface {
 	Init()
-	Place(x, y, direction int) error
-	// Move() error
-	// Left() error
-	// Right() error
-	Report()
+	Place(x, y int, direction string) error
+	Move() error
+	Left()
+	Right()
+	Report() string
 	IsPlaced() bool
 	GetState() RobotState
 }

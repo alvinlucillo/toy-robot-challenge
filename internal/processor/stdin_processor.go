@@ -25,7 +25,7 @@ func (p *StdinProcessor) Process() error {
 	p.robot.Init()
 
 	p.logger.Println("Welcome to the Toy Robot Challenge Program! 🤖")
-	p.logger.Println("Need help? Enter HELP")
+	p.logger.Println("Enter HELP for more details")
 	p.logger.Println("\nEnter your commands below:")
 
 	helpText := `Usage: COMMAND [ARGS]
@@ -34,11 +34,11 @@ func (p *StdinProcessor) Process() error {
             - Args:   x - the X coordinate (valid values: 0-3)
                       y - the Y coordinate (valid values: 0-3)
                       z - the direction the robot is facing (valid values: NORTH,EAST,SOUTH,WEST)
-            - Example: PLACE 1,2,north
+            - Example: PLACE 1,2,NORTH
      LEFT         Rotates the robot 90 degrees to the left
      RIGHT        Rotates the robot 90 degrees to the right
      MOVE         Moves the robot one unit forward
-     REPORT       Prints the location (X,Y) and direction it's facing`
+     REPORT       Prints the robot's location (X,Y) and direction it's facing`
 
 	scanner := bufio.NewScanner(p.source)
 
@@ -51,11 +51,11 @@ func (p *StdinProcessor) Process() error {
 		robot.CommandHelp:   true,
 	}
 
-	directionsMap := map[string]int{
-		"NORTH": robot.DirectionNorth,
-		"EAST":  robot.DirectionEast,
-		"WEST":  robot.DirectionWest,
-		"SOUTH": robot.DirectionSouth,
+	directionsMap := map[string]bool{
+		robot.DirectionNorthTitle: true,
+		robot.DirectionEastTitle:  true,
+		robot.DirectionSouthTitle: true,
+		robot.DirectionWestTitle:  true,
 	}
 
 	for {
@@ -67,51 +67,56 @@ func (p *StdinProcessor) Process() error {
 				continue
 			}
 
-			if commandParts[0] == robot.CommandPlace {
-				p.robot.Place(1, 2, robot.DirectionNorth)
-			} else {
-				switch commandParts[0] {
-				case robot.CommandHelp, strings.ToLower(robot.CommandHelp):
-					p.logger.Println(helpText)
-				case robot.CommandLeft, robot.CommandRight, robot.CommandMove, robot.CommandReport:
-					if !p.robot.IsPlaced() {
-						p.logger.Println("> Oops. Robot not yet placed. Enter a PLACE command first.")
-						continue
-					}
-					fallthrough
-				case robot.CommandPlace:
-					if len(commandParts) != 2 {
-						p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
-						continue
-					}
-
-					placeParts := strings.Split(commandParts[1], ",")
-					if len(placeParts) != 3 {
-						p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
-						continue
-					}
-
-					xValue, err := strconv.Atoi(placeParts[0])
-					if err != nil {
-						p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
-						continue
-					}
-
-					yValue, err := strconv.Atoi(placeParts[1])
-					if err != nil {
-						p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
-						continue
-					}
-
-					direction := directionsMap[placeParts[2]]
-					if direction == 0 {
-						p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
-						continue
-					}
-
-					p.robot.Place(xValue, yValue, direction)
+			if commandParts[0] != robot.CommandPlace && commandParts[0] != robot.CommandHelp {
+				if !p.robot.IsPlaced() {
+					p.logger.Println("> Oops. Robot not yet placed. Enter a PLACE command first.")
+					continue
 				}
 			}
+
+			switch commandParts[0] {
+			case robot.CommandHelp:
+				p.logger.Println(helpText)
+			case robot.CommandPlace:
+				if len(commandParts) != 2 {
+					p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
+					continue
+				}
+
+				placeParts := strings.Split(commandParts[1], ",")
+				if len(placeParts) != 3 {
+					p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
+					continue
+				}
+
+				xValue, err := strconv.Atoi(placeParts[0])
+				if err != nil {
+					p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
+					continue
+				}
+
+				yValue, err := strconv.Atoi(placeParts[1])
+				if err != nil {
+					p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
+					continue
+				}
+
+				if _, found := directionsMap[placeParts[2]]; !found {
+					p.logger.Println("> Invalid use of PLACE. Enter HELP for usage.")
+					continue
+				}
+
+				p.robot.Place(xValue, yValue, placeParts[2])
+			case robot.CommandReport:
+				p.logger.Print("> ", p.robot.Report())
+			case robot.CommandMove:
+				p.robot.Move()
+			case robot.CommandLeft:
+				p.robot.Left()
+			case robot.CommandRight:
+				p.robot.Right()
+			}
+
 		} else {
 			if scanner.Err() != nil {
 				return scanner.Err()
