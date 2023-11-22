@@ -11,7 +11,7 @@ type ToyRobot struct {
 func (t *ToyRobot) Place(x, y int, direction string) error {
 	d := t.mapDirectionsByTitle[direction]
 
-	if (x >= 0 && x <= 3) && (y >= 0 && y <= 3) && d != 0 {
+	if (x >= 0 && x <= 4) && (y >= 0 && y <= 4) && d != 0 {
 		t.state.X = x
 		t.state.Y = y
 		t.state.Direction = d
@@ -80,7 +80,7 @@ func (t *ToyRobot) Move() error {
 	}
 
 	// only apply the temporary state if the robot doesn't fall off the table
-	if state.X >= 0 && state.X <= 3 && state.Y >= 0 && state.Y <= 3 {
+	if state.X >= 0 && state.X <= 4 && state.Y >= 0 && state.Y <= 4 {
 		t.state = state
 		return nil
 	} else {

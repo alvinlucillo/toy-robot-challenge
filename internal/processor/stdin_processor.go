@@ -40,8 +40,8 @@ func (p *StdinProcessor) Process() error {
 	helpText := `Usage: COMMAND [ARGS]
     Commands:
      PLACE x,y,z  Places the robot on the table in position (x,y) facing z direction 
-            - Args:   x - the X coordinate (valid values: 0-3)
-                      y - the Y coordinate (valid values: 0-3)
+            - Args:   x - the X coordinate (valid values: 0-4)
+                      y - the Y coordinate (valid values: 0-4)
                       z - the direction the robot is facing (valid values: NORTH,EAST,SOUTH,WEST)
             - Example: PLACE 1,2,NORTH
      LEFT         Rotates the robot 90 degrees to the left

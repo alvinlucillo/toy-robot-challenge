@@ -24,8 +24,8 @@ func TestPlace(t *testing.T) {
 		"successful place":                {1, 1, DirectionEastTitle, 1, 1, DirectionEastTitle, nil},
 		"failed place - negative x":       {-1, 1, DirectionEastTitle, -1, -1, "", invalidPlaceArgErr},
 		"failed place - negative y":       {1, -1, DirectionEastTitle, -1, -1, "", invalidPlaceArgErr},
-		"failed place - exceeded x limit": {4, 1, DirectionEastTitle, -1, -1, "", invalidPlaceArgErr},
-		"failed place - exceeded y limit": {1, 4, DirectionEastTitle, -1, -1, "", invalidPlaceArgErr},
+		"failed place - exceeded x limit": {5, 1, DirectionEastTitle, -1, -1, "", invalidPlaceArgErr},
+		"failed place - exceeded y limit": {1, 5, DirectionEastTitle, -1, -1, "", invalidPlaceArgErr},
 	}
 
 	for tn, tc := range testCases {
