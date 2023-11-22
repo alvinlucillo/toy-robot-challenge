@@ -23,10 +23,10 @@ const (
 )
 
 type RobotState struct {
-	x         int
-	y         int
-	direction int
-	isPlaced  bool
+	X         int
+	Y         int
+	Direction int
+	IsPlaced  bool
 }
 
 type Robot interface {

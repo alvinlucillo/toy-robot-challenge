@@ -13,8 +13,8 @@ const (
 )
 
 type SourceProcessor interface {
-	Init(source io.Reader, robot robot.Robot, logger Logger)
-	Process() error
+	Init(source io.Reader, robot robot.Robot, logger Logger) // Initialization task
+	Process() error                                          // Main robot control
 }
 
 type Processor struct {

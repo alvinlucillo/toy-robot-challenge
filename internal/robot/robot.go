@@ -12,10 +12,10 @@ func (t *ToyRobot) Place(x, y int, direction string) error {
 	d := t.mapDirectionsByTitle[direction]
 
 	if (x >= 0 && x <= 3) && (y >= 0 && y <= 3) && d != 0 {
-		t.state.x = x
-		t.state.y = y
-		t.state.direction = d
-		t.state.isPlaced = true
+		t.state.X = x
+		t.state.Y = y
+		t.state.Direction = d
+		t.state.IsPlaced = true
 
 		return nil
 	} else {
@@ -24,7 +24,7 @@ func (t *ToyRobot) Place(x, y int, direction string) error {
 }
 
 func (t *ToyRobot) Report() string {
-	return fmt.Sprintf("Output: %v,%v,%v\n", t.state.x, t.state.y, t.mapDirectionsByValue[t.state.direction])
+	return fmt.Sprintf("Output: %v,%v,%v", t.state.X, t.state.Y, t.mapDirectionsByValue[t.state.Direction])
 }
 
 func (t *ToyRobot) Left() {
@@ -36,17 +36,17 @@ func (t *ToyRobot) Right() {
 }
 
 func (t *ToyRobot) changeDirection(value int) {
-	d := (t.state.direction + value) % 4
+	d := (t.state.Direction + value) % 4
 
 	if d == 0 {
 		d = 4
 	}
 
-	t.state.direction = d
+	t.state.Direction = d
 }
 
 func (t *ToyRobot) IsPlaced() bool {
-	return t.state.isPlaced
+	return t.state.IsPlaced
 }
 
 func (t *ToyRobot) GetState() RobotState {
@@ -68,16 +68,16 @@ func (t *ToyRobot) Move() error {
 	}
 
 	// temporary variable (state) contains modified state
-	direction := directionMoveMap[t.state.direction]
+	direction := directionMoveMap[t.state.Direction]
 	state := t.state
 	if direction.coordinate == "x" {
-		state.x += direction.value
+		state.X += direction.value
 	} else {
-		state.y += direction.value
+		state.Y += direction.value
 	}
 
 	// only apply the temporary state if the robot doesn't fall off the table
-	if state.x >= 0 && state.x <= 3 && state.y >= 0 && state.y <= 3 {
+	if state.X >= 0 && state.X <= 3 && state.Y >= 0 && state.Y <= 3 {
 		t.state = state
 		return nil
 	} else {
@@ -87,9 +87,9 @@ func (t *ToyRobot) Move() error {
 
 func (t *ToyRobot) Init() {
 	t.state = RobotState{
-		x:         -1,
-		y:         -1,
-		direction: -1,
+		X:         -1,
+		Y:         -1,
+		Direction: -1,
 	}
 
 	t.mapDirectionsByTitle = map[string]int{

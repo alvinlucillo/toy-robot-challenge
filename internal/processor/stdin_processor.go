@@ -3,6 +3,7 @@ package processor
 import (
 	"alvinlucillo/toy-robot-challenge/internal/robot"
 	"bufio"
+	"fmt"
 	"io"
 	"strconv"
 	"strings"
@@ -106,11 +107,15 @@ func (p *StdinProcessor) Process() error {
 					continue
 				}
 
-				p.robot.Place(xValue, yValue, placeParts[2])
+				if err := p.robot.Place(xValue, yValue, placeParts[2]); err != nil {
+					p.logger.Println("> Robot not placed. It'll fall off the table.")
+				}
 			case robot.CommandReport:
-				p.logger.Print("> ", p.robot.Report())
+				p.logger.Println(fmt.Sprintf("> %s", p.robot.Report()))
 			case robot.CommandMove:
-				p.robot.Move()
+				if err := p.robot.Move(); err != nil {
+					p.logger.Println("> Robot not moved. It'll fall off the table.")
+				}
 			case robot.CommandLeft:
 				p.robot.Left()
 			case robot.CommandRight:
@@ -121,7 +126,6 @@ func (p *StdinProcessor) Process() error {
 			if scanner.Err() != nil {
 				return scanner.Err()
 			}
-
 			break
 		}
 	}
