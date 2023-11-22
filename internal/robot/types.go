@@ -23,10 +23,10 @@ const (
 )
 
 type RobotState struct {
-	X         int
-	Y         int
-	Direction int
-	IsPlaced  bool
+	X         int  // x coordinate
+	Y         int  // y coordinate
+	Direction int  // NORTH, EAST, SOUTH, WEST
+	IsPlaced  bool // robot placed on the table or not
 }
 
 type Robot interface {

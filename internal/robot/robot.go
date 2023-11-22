@@ -35,6 +35,9 @@ func (t *ToyRobot) Right() {
 	t.changeDirection(1)
 }
 
+// remainder determines the new direction
+// e.g., 2 (i.e., EAST) + 1 (i.e., move 90 deg to right) = 3 % 4 = 3 (SOUTH)
+// e.g., 1 (i.e., NORTH) - 1 (i.e., move 90 deg to left) = 0 % 4 = 0 = 4 (WEST)
 func (t *ToyRobot) changeDirection(value int) {
 	d := (t.state.Direction + value) % 4
 

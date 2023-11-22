@@ -21,6 +21,7 @@ type Processor struct {
 	SrcProcessor SourceProcessor
 }
 
+// Generates the processor based on the configuration
 func NewProcessor(source io.Reader, sourceType string) (*Processor, error) {
 	var sourceProcessor SourceProcessor
 	if sourceType == SourceTypeStdin {
